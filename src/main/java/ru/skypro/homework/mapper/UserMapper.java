@@ -38,11 +38,16 @@ public interface UserMapper {
 
     /**@Mapping target - это свойства объекта (@link - User), которые должны быть сгенерированы и должны быть заполнены.
      * А source - параметр object properties, selection - (@link - Register)
+     * Когда свойства двух объектов несовместимы, например, когда поле в объекте source Register не существует в Users
+     * во время компиляции будет предупреждение,  поэтому вместо sourse ignore = true в @Mapping.
+     * Поэтому полей, которых нет в source  обозначаем ignore = true. Это поля - id и image
      */
+
+
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "email", source = "username")
     @Mapping(target = "image", ignore = true)
-
     Users toUsers(Register register);
 
 
@@ -51,13 +56,8 @@ public interface UserMapper {
      * Преобразовать в объект UpdateUserDto
      * @param user Users
      * @return UpdateUserDto
+     * Все поля есть в source   - (@link   Users)
      */
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "email", ignore = true)
-    @Mapping(target = "password", ignore = true)
-    @Mapping(target = "image", ignore = true)
-    @Mapping(target = "role", ignore = true)
     UpdateUserDto toUpdateUserDto (Users user);
 
 
@@ -66,17 +66,18 @@ public interface UserMapper {
      * Преобразовать в объект UserDto
      * @param user Users
      * @return UserDto
+     * Все поля есть в source   - (@link   Users)
      */
-    @Mapping(target = "password", ignore = true)
-    @Mapping(target = "role", ignore = true)
+
     UserDto toUserDto(Users user);
 
 
 
-    /**   Когда свойства двух объектов несовместимы, например, когда поле в объекте User не существует в UserDTO,
-     во время компиляции будет предупреждение,  Вы можете настроить ignore = true в @Mapping.
+    /**   Когда свойства двух объектов несовместимы, например, когда поле в объекте  sourse UserDto не существует в Users,
+     во время компиляции будет предупреждение, настроим ignore = true в @Mapping.
      */
+    @Mapping(target = "email", source = "eMail")
     @Mapping(target = "password", ignore = true)
-    @Mapping(target = "role", ignore = true)
-    void  UsersFromUserDto(UserDto userDto, @MappingTarget Users user);
+
+    void  usersFromUserDto(UserDto userDto, @MappingTarget Users user);
 }
