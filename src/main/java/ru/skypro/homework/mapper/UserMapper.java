@@ -1,6 +1,5 @@
 package ru.skypro.homework.mapper;
 
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import ru.skypro.homework.dto.Register;
@@ -73,6 +72,8 @@ public interface UserMapper {
 
 
 
+
+
     /**   Когда свойства двух объектов несовместимы, например, когда поле в объекте  sourse UserDto не существует в Users,
      во время компиляции будет предупреждение, настроим ignore = true в @Mapping.
      */
@@ -80,4 +81,6 @@ public interface UserMapper {
     @Mapping(target = "password", ignore = true)
 
     void  usersFromUserDto(UserDto userDto, @MappingTarget Users user);
+
+    Users usersFromDTO(UserDto userDto);
 }
