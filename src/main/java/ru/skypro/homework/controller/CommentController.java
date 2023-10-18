@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import ru.skypro.homework.dto.CommentDto;
+import ru.skypro.homework.dto.CommentsDto;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
+import ru.skypro.homework.service.impl.CommentServiceImpl;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -14,17 +16,17 @@ import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
 @RequiredArgsConstructor
 @RequestMapping("/ads")
 public class CommentController {
-    private final  CommentService commentService;
+    private final CommentServiceImpl commentServiceImpl;
 
 
     /**
      * Получить комментарии по его идентификатору.
      * @param id Идентификатор объявления, для которого нужно получить комментарии.
-     * @return Объект {@link  ResponseEntity} с оберткой {@link CommentDto}, содержащей список комментариев и статус ответа.
+     * @return Объект {@link  ResponseEntity} с оберткой {@link CommentsDto}, содержащей список комментариев и статус ответа.
      */
     @GetMapping("/{id}/comments")
-    public ResponseEntity<CommentDto> getComments(@PathVariable Integer id) {
-        return ResponseEntity.ok(commentService.getComments(id));
+    public ResponseEntity<CommentsDto> getComments(@PathVariable Integer id) {
+        return ResponseEntity.ok(commentServiceImpl.getComments(id));
     }
 
 
@@ -39,7 +41,7 @@ public class CommentController {
     public ResponseEntity<CommentDto> addComment(@PathVariable Integer id,
                                                  @RequestBody CreateOrUpdateCommentDto createComment,
                                                  @RequestBody Authentication authentication) {
-        return ResponseEntity.ok(commentService.addComment(id, createComment, authentication.getName()));
+        return ResponseEntity.ok(commentServiceImpl.addComment(id, createComment, authentication.getName()));
     }
 
 
@@ -51,7 +53,7 @@ public class CommentController {
      */
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Integer adId, @PathVariable Integer commentId) {
-        commentService.deleteComment(adId, commentId);
+        commentServiceImpl.deleteComment(adId, commentId);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
@@ -67,6 +69,6 @@ public class CommentController {
     public ResponseEntity<CommentDto> updateComment(@PathVariable Integer adId,
                                                     @PathVariable Integer commentId,
                                                     @RequestBody CreateOrUpdateCommentDto updateComment) {
-        return ResponseEntity.ok(commentService.updateComment(adId, commentId, updateComment));
+        return ResponseEntity.ok(commentServiceImpl.updateComment(adId, commentId, updateComment));
     }
 }
