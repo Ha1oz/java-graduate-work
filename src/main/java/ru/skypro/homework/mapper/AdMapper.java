@@ -39,14 +39,14 @@ public interface AdMapper {
     AdsDto toAdsDto(Ads ads);
 
     /**
-     * Преобразовать в объект  List<AdsDto>
-     * @param  List<Ads>  List<Ads>
+     * Преобразовать в объект List<AdsDto>
+     * @param  adsList  List<Ads>
      * @return  List<AdsDto>
      */
     List<AdsDto> toDto (List<Ads> adsList);
 
     /**
-     * Преобразовать в объект   Ads
+     * Преобразовать в объект Ads
      * @param ad Ad
      * @return  Ads
      */
@@ -55,7 +55,7 @@ public interface AdMapper {
      @Mapping(target = "authorLastName",source = "user.lastName")
      @Mapping(target = "email",source = "user.email")
      @Mapping(target = "phone",source = "user.phone")
-     Ads toAds(Ad ad);
+     Ads toAds(Ads ad);
 
     /**
      * Обновляем  Ads From CreateOrUpdateAdsDto and Ads

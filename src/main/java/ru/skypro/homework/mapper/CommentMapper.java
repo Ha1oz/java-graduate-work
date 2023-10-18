@@ -28,7 +28,7 @@ public interface  CommentMapper {
 
 
     /**
-     * Преобразовать в объект  Comments
+     * Преобразовать в объект Comments
      * @param  createOrUpdateCommentDto CreateOrUpdateCommentDto
      * @return Comments
      */
@@ -36,7 +36,7 @@ public interface  CommentMapper {
 
 
     /**
-     * Преобразовать в объект  CommentDto
+     * Преобразовать в объект CommentDto
      * @param  comment Comments
      * @return  CommentDto
      */

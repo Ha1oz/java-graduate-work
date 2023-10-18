@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.AdDTO;
+import ru.skypro.homework.dto.AdDto;
+import ru.skypro.homework.dto.AdsDto;
+import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -20,10 +22,10 @@ public class AdController {
     private final AdService adService;
     /**
      * Получить список всех объявлений.
-     * @return Объект {@link ResponseEntity} с оберткой {@link AdsDTO}, содержащей список объявлений.
+     * @return Объект {@link ResponseEntity} с оберткой {@link AdsDto}, содержащей список объявлений.
      */
     @GetMapping
-    public ResponseEntity<AdsDTO> getAllAds() {
+    public ResponseEntity<AdsDto> getAllAds() {
         return ResponseEntity.ok(adService.getAllAds());
     }
 
@@ -32,14 +34,14 @@ public class AdController {
     /**
      * Добавить объявление.
      * @param authentication Объект {@link Authentication} с информацией о  пользователе, выполнившим аутентификацию.
-     * @param CreateOrUpdateAdDTO  Объект {@link CreateOrUpdateAdDTO} с данными созданного объявления.
+     * @param createAd  Объект {@link CreateOrUpdateAdDto} с данными созданного объявления.
      * @param image  Объект {@link MultipartFile} с изображением объявления.
      * @return Объект {@link ResponseEntity} с созданным объявлением.
      */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<AdDTO> addAd(Authentication authentication,
-                                        @RequestPart("properties") CreateOrUpdateAdDTO createAd,
-                                        @RequestPart("image") MultipartFile image) {
+    public ResponseEntity<AdDto> addAd(Authentication authentication,
+                                       @RequestPart("properties") CreateOrUpdateAdDto createAd,
+                                       @RequestPart("image") MultipartFile image) {
         return ResponseEntity.ok(adService.addAd(createAd, authentication.getName(), image));
     }
 
@@ -48,13 +50,13 @@ public class AdController {
      * Обновить объявление по его идентификатору.
      * @PatchMapping это составленная аннотация, которая действует как ярлык для @RequestMapping(method = RequestMethod.PATCH)
      * для сопоставления HTTP-запросов на ИСПРАВЛЕНИЕ с конкретными методами обработки.
-     * @param CreateOrUpdateAdDTO  Объект {@link CreateOrUpdateAdDTO} с обновленными данными для объявления.
+     * @param updateAd  Объект {@link CreateOrUpdateAdDto} с обновленными данными для объявления.
      * @param id Идентификатор объявления, которое  обновляется.
      * @return Объект {@link ResponseEntity} с обновленным объявлением.
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<AdDTO> updateAds(@RequestBody CreateOrUpdateAd updateAd,
-                                            @PathVariable Integer id) {
+    public ResponseEntity<AdDto> updateAds(@RequestBody CreateOrUpdateAdDto updateAd,
+                                           @PathVariable Integer id) {
         return ResponseEntity.ok(adService.updateAds(updateAd, id));
     }
 
@@ -76,10 +78,10 @@ public class AdController {
     /**
      * Получить список объявлений пользователя, выполнившего аутентификацию.
      * @param authentication Объект {@link Authentication} с информацией об аутентифицированном пользователе.
-     * @return Объект {@link ResponseEntity} с оберткой {@link AdsDTO}, содержащей список объявлений пользователя.
+     * @return Объект {@link ResponseEntity} с оберткой {@link AdsDto}, содержащей список объявлений пользователя.
      */
     @GetMapping("/me")
-    public ResponseEntity<AdsDTO> getAdMe(Authentication authentication) {
+    public ResponseEntity<AdsDto> getAdMe(Authentication authentication) {
         return ResponseEntity.ok(adService.getAdMe(authentication.getName()));
     }
 

@@ -9,10 +9,9 @@ import ru.skypro.homework.entity.Users;
 import org.mapstruct.MappingTarget;
 /**Mapstruct поддерживает сопоставление одного компонента с другим компонентом,
    по умолчанию используется карта с тем же именем,
-   разные имена настраиваются с помощью  @Mapping,
+   разные имена настраиваются с помощью @Mapping,
    а поля, которые не хотят сопоставляться, могут быть настроены без участия mapping
  */
-
 public interface UserMapper {
     UserMapper INSTANCT = Mappers.getMapper(UserMapper.class);
 
@@ -74,7 +73,7 @@ public interface UserMapper {
 
 
 
-    /**   Когда свойства двух объектов несовместимы, например, когда поле в объекте  sourse UserDto не существует в Users,
+    /**   Когда свойства двух объектов несовместимы, например, когда поле в объекте sourse UserDto не существует в Users,
      во время компиляции будет предупреждение, настроим ignore = true в @Mapping.
      */
     @Mapping(target = "email", source = "eMail")

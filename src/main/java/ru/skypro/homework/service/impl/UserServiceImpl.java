@@ -95,10 +95,10 @@ public class UserServiceImpl implements ru.skypro.homework.service.inter.UserSer
     /**
      * Найти и получить объект UserDto по id пользователя (Integer userId).
      * Использует методы:
-     * {@link UserRepository#findById(userId)},
+     * {@link UserRepository#findById(userId)} (userId)},
      * {@link UserMapper#toUserDto(user)}.
      *
-     * @param id пользователя.
+     * @param userId пользователя.
      * @return oбъект UserDto с параметрами пользователя.
      * @throws UserWithIdNotFoundException - исключение eсли пользователь с указанным id не найден.
      */
@@ -172,7 +172,7 @@ public class UserServiceImpl implements ru.skypro.homework.service.inter.UserSer
      * {@link UserWithEmailNotFoundException (String)},
      *
      * @param userDto Объект UserDto с обновленными данными пользователя.
-     * @param email   Адрес электронной почты пользователя.
+     * @param id Уникальный id пользователя
      * @return Объект UserDto с обновленными параметрами пользователя.
      * @throws UserWithEmailNotFoundException если пользователь с указанным адресом электронной почты не найден.
      */
@@ -215,8 +215,7 @@ public class UserServiceImpl implements ru.skypro.homework.service.inter.UserSer
      * Использует методы:
      * {@link  userRepository.deleteById(userId)},
      *
-     * @param id пользователя.
-     *           метод  ничего не возвращает - void
+     * @param userId пользователя.
      */
     @Override
     public void deleteUser(Integer userId) {
