@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDto;
 import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
+import ru.skypro.homework.service.impl.AdServiceImpl;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -19,14 +20,14 @@ import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 
 public class AdController {
 
-    private final AdService adService;
+    private final AdServiceImpl adServiceImpl;
     /**
      * Получить список всех объявлений.
      * @return Объект {@link ResponseEntity} с оберткой {@link AdsDto}, содержащей список объявлений.
      */
     @GetMapping
     public ResponseEntity<AdsDto> getAllAds() {
-        return ResponseEntity.ok(adService.getAllAds());
+        return ResponseEntity.ok(adServiceImpl.getAllAds());
     }
 
 
@@ -42,7 +43,7 @@ public class AdController {
     public ResponseEntity<AdDto> addAd(Authentication authentication,
                                        @RequestPart("properties") CreateOrUpdateAdDto createAd,
                                        @RequestPart("image") MultipartFile image) {
-        return ResponseEntity.ok(adService.addAd(createAd, authentication.getName(), image));
+        return ResponseEntity.ok(adServiceImpl.addAd(createAd, authentication.getName(), image));
     }
 
 
@@ -57,7 +58,7 @@ public class AdController {
     @PatchMapping("/{id}")
     public ResponseEntity<AdDto> updateAds(@RequestBody CreateOrUpdateAdDto updateAd,
                                            @PathVariable Integer id) {
-        return ResponseEntity.ok(adService.updateAds(updateAd, id));
+        return ResponseEntity.ok(adServiceImpl.updateAds(updateAd, id));
     }
 
 
@@ -69,7 +70,7 @@ public class AdController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeAd(@PathVariable Integer id) {
-        adService.removeAd(id);
+        adServiceImpl.removeAd(id);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
@@ -82,7 +83,7 @@ public class AdController {
      */
     @GetMapping("/me")
     public ResponseEntity<AdsDto> getAdMe(Authentication authentication) {
-        return ResponseEntity.ok(adService.getAdMe(authentication.getName()));
+        return ResponseEntity.ok(adServiceImpl.getAdMe(authentication.getName()));
     }
 
 
@@ -90,10 +91,10 @@ public class AdController {
      * Обновить изображение объявления по его идентификатору.
      * @param id    Идентификатор объявления, для которого нужно обновить изображение.
      * @param image Объект {@link MultipartFile} с новым изображением для объявления.
-     * @return Объект {@link ResponseEntity} с   обновленным изображением объявления в случае успеха.
+     * @return Объект {@link ResponseEntity} с обновленным изображением объявления в случае успеха.
      */
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateAdImage(@PathVariable Integer id, @RequestParam MultipartFile image) {
-        return ResponseEntity.ok(adService.updateAdImage (id, image));
+    public ResponseEntity<AdDto> updateAdImage(@PathVariable Integer id, @RequestParam MultipartFile image) {
+        return ResponseEntity.ok(adServiceImpl.updateAdImage(id, image));
     }
 }
