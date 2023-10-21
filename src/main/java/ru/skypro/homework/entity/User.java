@@ -17,7 +17,7 @@ public class User {
     private Integer id;
 
     @Email(message = "Некорректный адрес электронной почты")
-    private String eMail;
+    private String email;
 
     private String firstName;
     private String lastName;

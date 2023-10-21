@@ -9,7 +9,7 @@ public class UserMapper {
     public static UserDto mapToDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
-        dto.setEMail(user.getEMail());
+        dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setPhone(user.getPhone());
@@ -21,7 +21,7 @@ public class UserMapper {
     public User mapToEntity(UserDto dto) {
         User user = new User();
         user.setId(dto.getId());
-        user.setEMail(dto.getEMail());
+        user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setPhone(dto.getPhone());
