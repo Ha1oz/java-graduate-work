@@ -2,11 +2,15 @@ package ru.skypro.homework.mapper;
 
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.AdDto;
+import ru.skypro.homework.dto.AdsDto;
+import ru.skypro.homework.dto.CreateOrUpdateAdDto;
+import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.entity.Ad;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 @Service
 public class AdMapper {
@@ -33,5 +37,21 @@ public class AdMapper {
         ad.setPrice(dto.getPrice());
         ad.setTitle(dto.getTitle());
         return ad;
+    }
+
+    public List<AdsDto> mapToDto(List<Ad> all) {
+        return null;
+    }
+
+    public Ad mapToEntity(CreateOrUpdateAdDto createAdDto) {
+        return null;
+    }
+
+    public ExtendedAdDto mapToDto(Optional<Ad> ad) {
+        return null;
+    }
+
+    public List<AdDto> mapToDto(User user) {
+        return null;
     }
 }

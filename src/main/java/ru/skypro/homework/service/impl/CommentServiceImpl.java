@@ -35,11 +35,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto addComment(Integer pk, CommentDto commentDto) {
         ExtendedAdDto ad = adService.getAds(pk);
-//        User currentUser = userService.getUser(authentication.getName());
+//        User currentUser = userService.getUser(authentication.getName()); TODO
 
         Comment comment = CommentMapper.mapToEntity(commentDto);
         comment.setAd(ad);
-//        comment.setUser(currentUser);
+//        comment.setUser(currentUser); TODO
         comment.setCreatedAt(LocalDate.now().atStartOfDay());
         Comment result = commentRepository.save(comment);
         return CommentMapper.mapToDto(result);
@@ -49,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
     public void deleteComment(Integer pk) {
         Comment comment = commentRepository.findAdComments(pk)
                 .orElseThrow(() -> new CommentNotFoundException(log.getName()));
-//        securityService.checkIfUserHasPermissionToAlter(authentication, comment.getUser().getEmail());
+//        securityService.checkIfUserHasPermissionToAlter(authentication, comment.getUser().getEmail()); TODO
         commentRepository.delete(comment);
     }
 
@@ -57,7 +57,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto updateComment(Integer pk, CommentDto commentDto) {
         Comment comment = commentRepository.findAdComments(pk)
                 .orElseThrow(() -> new CommentNotFoundException(log.getName()));
-//        securityService.checkIfUserHasPermissionToAlter(authentication, comment.getUser().getEmail());
+//        securityService.checkIfUserHasPermissionToAlter(authentication, comment.getUser().getEmail()); TODO
         comment.setText(commentDto.getText());
         comment.setCreatedAt(LocalDate.now().atStartOfDay());
         commentRepository.save(comment);

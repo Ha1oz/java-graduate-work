@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.skypro.homework.entity.Ad;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AdRepository extends JpaRepository<Ad, Integer> {
@@ -16,4 +17,6 @@ public interface AdRepository extends JpaRepository<Ad, Integer> {
     List<Ad> findAds(String search);
 
     List<Ad> findAdsByUserEmail(String username);
+
+    void delete(Optional<Ad> ad);
 }

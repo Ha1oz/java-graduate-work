@@ -6,6 +6,8 @@ import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
 
+import java.io.IOException;
+
 
 public interface AdService {
     AdsDto getAllAds();
@@ -14,5 +16,5 @@ public interface AdService {
     void removeAd(Integer pk);
     AdDto updateAd(Integer pk, CreateOrUpdateAdDto updateAdDto);
     AdsDto getAdsMe(String username);
-    AdsDto findAds(String search);
+    AdDto updateAdImage(Integer pk, MultipartFile image);
 }
