@@ -7,14 +7,13 @@ import ru.skypro.homework.entity.User;
 import ru.skypro.homework.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
 public class CommentMapper {
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
 
-    public CommentDto mapToDto(Comment comment) {
+    public static CommentDto mapToDto(Comment comment) {
         CommentDto dto = new CommentDto();
         dto.setAuthor(comment.getUser().getId());
         dto.setAuthorImage(comment.getUser().getImage());
@@ -25,7 +24,7 @@ public class CommentMapper {
         return dto;
     }
 
-    public Comment mapToEntity(CommentDto dto) {
+    public static Comment mapToEntity(CommentDto dto) {
         Comment comment = new Comment();
         User author = userRepository.findById(dto.getAuthor())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
