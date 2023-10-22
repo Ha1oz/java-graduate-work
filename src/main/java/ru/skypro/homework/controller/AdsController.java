@@ -44,7 +44,7 @@ public class AdsController {
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping
-    public AdDto updateAds (@RequestParam Integer id,
+    public AdDto updateAd(@RequestParam Integer id,
                             @RequestBody CreateOrUpdateAdDto updateAdDto){
         return new AdDto();
     }

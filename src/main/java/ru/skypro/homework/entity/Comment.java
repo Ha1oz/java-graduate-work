@@ -1,6 +1,7 @@
 package ru.skypro.homework.entity;
 
 import lombok.Data;
+import ru.skypro.homework.dto.ExtendedAdDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,5 +24,13 @@ public class Comment {
     private String text;
 
     public Comment() {
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ad_id")
+    private Ad ad;
+
+    public void setAd(ExtendedAdDto ad) {
+
     }
 }

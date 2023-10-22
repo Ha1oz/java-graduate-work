@@ -3,6 +3,7 @@ package ru.skypro.homework.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity(name = "ad")
@@ -24,4 +25,7 @@ public class Ad {
 
     public Ad() {
     }
+
+    @OneToMany(mappedBy = "ad")
+    private List<Comment> comments;
 }
