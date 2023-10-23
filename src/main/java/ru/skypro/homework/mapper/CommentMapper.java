@@ -2,6 +2,7 @@ package ru.skypro.homework.mapper;
 
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.CommentDto;
+import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
 import ru.skypro.homework.entity.Comment;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.repository.UserRepository;
@@ -24,7 +25,7 @@ public class CommentMapper {
         return dto;
     }
 
-    public static Comment mapToEntity(CommentDto dto) {
+    public static Comment mapToEntity(CreateOrUpdateCommentDto dto) {
         Comment comment = new Comment();
         User author = userRepository.findById(dto.getAuthor())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));

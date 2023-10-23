@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.CommentDto;
+import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.entity.Comment;
 import ru.skypro.homework.mapper.CommentMapper;
@@ -33,11 +34,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto addComment(Integer pk, CommentDto commentDto) {
+    public CommentDto addComment(Integer pk, CreateOrUpdateCommentDto createOrUpdateCommentDto) {
         ExtendedAdDto ad = adService.getAds(pk);
 //        User currentUser = userService.getUser(authentication.getName()); TODO
 
-        Comment comment = CommentMapper.mapToEntity(commentDto);
+        Comment comment = CommentMapper.mapToEntity(createOrUpdateCommentDto);
         comment.setAd(ad);
 //        comment.setUser(currentUser); TODO
         comment.setCreatedAt(LocalDate.now().atStartOfDay());
