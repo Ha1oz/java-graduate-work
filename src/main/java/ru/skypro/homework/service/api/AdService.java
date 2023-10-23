@@ -16,5 +16,5 @@ public interface AdService {
     void removeAd(Integer pk);
     AdDto updateAd(Integer pk, CreateOrUpdateAdDto updateAdDto);
     AdsDto getAdsMe(String username);
-    AdDto updateAdImage(Integer pk, MultipartFile image);
+    //AdDto updateAdImage(Integer pk, MultipartFile image);
 }

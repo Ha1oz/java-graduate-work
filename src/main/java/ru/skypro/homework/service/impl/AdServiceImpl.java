@@ -17,6 +17,7 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.api.AdService;
 import ru.skypro.homework.service.api.UserService;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,9 +80,11 @@ public class AdServiceImpl implements AdService {
         return myAdsDto;
     }
 
-//TODO
-    @Override
-    public AdDto updateAdImage(Integer id, MultipartFile image) {
-        return new AdDto();
-    }
+//    @Override
+//    public byte[] updateAdImage(Integer id, MultipartFile file) {
+//        Image oldImage = getImageFromDB(id);
+//        extractInfoFromFile(file, oldImage);
+//        Image savedImage = imageRepository.save(oldImage);
+//        return savedImage.getData();
+//    }
 }
