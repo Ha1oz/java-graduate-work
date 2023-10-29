@@ -2,6 +2,7 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
@@ -34,7 +35,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto addComment(Integer pk, CreateOrUpdateCommentDto createOrUpdateCommentDto) {
+    public CommentDto addComment(Integer pk, CreateOrUpdateCommentDto createOrUpdateCommentDto, Authentication authentication) {
         ExtendedAdDto ad = adService.getAds(pk);
 //        User currentUser = userService.getUser(authentication.getName()); TODO
 
@@ -47,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Integer pk) {
+    public void deleteComment(Integer pk, Authentication authentication) {
         Comment comment = commentRepository.findAdComments(pk)
                 .orElseThrow(() -> new CommentNotFoundException(log.getName()));
 //        securityService.checkIfUserHasPermissionToAlter(authentication, comment.getUser().getEmail()); TODO
@@ -55,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto updateComment(Integer pk, CommentDto commentDto) {
+    public CommentDto updateComment(Integer pk, CommentDto commentDto, Authentication authentication) {
         Comment comment = commentRepository.findAdComments(pk)
                 .orElseThrow(() -> new CommentNotFoundException(log.getName()));
 //        securityService.checkIfUserHasPermissionToAlter(authentication, comment.getUser().getEmail()); TODO

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPasswordDto;
@@ -25,14 +26,15 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDto> getUser() {
-        return ResponseEntity.ok(userService.getUserDtoByUsername(getUser().toString()));
+    public ResponseEntity<UserDto> getUser(Authentication authentication) {
+        return ResponseEntity.ok(userService.getUserDtoByUsername(getUser(authentication).toString()));
     }
 
     @PatchMapping("/me")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,
-                                              String username) {
-        return ResponseEntity.ok(userService.updateUser(userDto, username));
+                                              String username,
+                                              Authentication authentication) {
+        return ResponseEntity.ok(userService.updateUser(userDto, username, authentication));
     }
 
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

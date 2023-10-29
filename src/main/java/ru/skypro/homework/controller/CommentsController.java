@@ -3,6 +3,7 @@ package ru.skypro.homework.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
@@ -33,10 +34,11 @@ public class CommentsController {
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDto> addComment(@PathVariable(value = "id") Integer pk,
-                                                 @RequestBody CreateOrUpdateCommentDto createOrUpdateComment) {
+                                                 @RequestBody CreateOrUpdateCommentDto createOrUpdateComment,
+                                                 Authentication authentication) {
         CommentDto result = null;
         try {
-            result = commentService.addComment(pk, createOrUpdateComment);
+            result = commentService.addComment(pk, createOrUpdateComment, authentication);
         } catch (AdsNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
@@ -44,9 +46,10 @@ public class CommentsController {
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable(value = "commentId") Integer pk) {
+    public ResponseEntity<Void> deleteComment(@PathVariable(value = "commentId") Integer pk,
+                                              Authentication authentication) {
         try {
-            commentService.deleteComment(pk);
+            commentService.deleteComment(pk, authentication);
         } catch (CommentNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
@@ -55,10 +58,11 @@ public class CommentsController {
 
     @PatchMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<CommentDto> updateComment(@PathVariable(value = "commentId") Integer pk,
-                                                    @RequestBody CommentDto commentDto) {
+                                                    @RequestBody CommentDto commentDto,
+                                                    Authentication authentication) {
         CommentDto result = null;
         try {
-            result = commentService.updateComment(pk, commentDto);
+            result = commentService.updateComment(pk, commentDto, authentication);
         } catch (CommentNotFoundException e) {
             return ResponseEntity.notFound().build();
         }

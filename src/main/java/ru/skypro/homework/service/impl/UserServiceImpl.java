@@ -2,6 +2,7 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entity.User;
@@ -19,8 +20,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDto updateUser(UserDto userDto, String username) {
-        User user = userRepository.findUserByEmail(username).orElseThrow(RuntimeException::new);
+    public UserDto updateUser(UserDto userDto, String username, Authentication authentication) {
+        User user = userRepository.findUserByEmail(authentication.getName()).orElseThrow(RuntimeException::new);
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setPhone(userDto.getPhone());
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserDtoByUsername(String username) {
-        User response = getUser(username);
-        return userMapper.mapToDto(response);
+        return null;
     }
+
 }

@@ -2,6 +2,7 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDto;
@@ -17,7 +18,7 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.api.AdService;
 import ru.skypro.homework.service.api.UserService;
 
-import java.awt.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdDto addAd(CreateOrUpdateAdDto createAdDto, MultipartFile image){
+    public AdDto addAd(@NotNull Authentication authentication, CreateOrUpdateAdDto createAdDto, MultipartFile image){
         Ad ad = adMapper.mapToEntity(createAdDto);
         Ad savedAd = adRepository.save(ad);
         savedAd.setImage(ad.getImage());
@@ -55,13 +56,13 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public void removeAd(Integer pk) {
+    public void removeAd(Integer pk, Authentication authentication) {
         Optional<Ad> ad = adRepository.findById(pk);
         adRepository.delete(ad);
     }
 
     @Override
-    public AdDto updateAd(Integer pk, CreateOrUpdateAdDto updateAdDto) {
+    public AdDto updateAd(Integer pk, CreateOrUpdateAdDto updateAdDto, Authentication authentication) {
         Ad oldAd = adRepository.getReferenceById(pk);
         Ad infoToUpdate = adMapper.mapToEntity(updateAdDto);
         oldAd.setPrice(infoToUpdate.getPrice());
@@ -71,8 +72,8 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdsDto getAdsMe(String username) {
-        Optional<User> user = userRepository.findUserByEmail(username);
+    public AdsDto getAdsMe(String username, Authentication authentication) {
+        Optional<User> user = userRepository.findUserByEmail(authentication.getName());
         List<AdDto> listAdsDto = adMapper.mapToDto(user.get());
         AdsDto myAdsDto = new AdsDto();
         myAdsDto.setResults((ArrayList<AdDto>) listAdsDto);
