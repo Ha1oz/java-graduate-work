@@ -8,10 +8,5 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String phone;
-    /**
-     * {@link Role}
-     */
-    private String role;
-    // ссылка на фото пользователя
     private String image;
 }

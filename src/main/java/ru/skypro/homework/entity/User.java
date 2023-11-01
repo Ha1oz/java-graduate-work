@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Data
 @Entity(name = "users")
-public class Users {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -16,10 +16,6 @@ public class Users {
     private String firstName;
     private String lastName;
     private String phone;
-    private Role role;
     private String image;
-
-    public Users( ) {
-
-    }
+    private Role role;
 }
