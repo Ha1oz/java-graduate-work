@@ -3,6 +3,7 @@ package ru.skypro.homework.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+
 import ru.skypro.homework.dto.MyUserDetailsDto;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.dto.UserDto;
@@ -11,7 +12,7 @@ import ru.skypro.homework.entity.User;
 public interface UserMapper {
     @Mapping(source = "username", target = "email")
     User toUser(Register register);
-
+    User toUser(UserDto userDto);
     MyUserDetailsDto toMyUserDetailsDto(User user);
 
     UserDto toUserDto(User user);
