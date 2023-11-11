@@ -15,6 +15,8 @@ import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.exception.AdsNotFoundException;
 import ru.skypro.homework.service.api.AdService;
 import ru.skypro.homework.service.api.ImageService;
+import ru.skypro.homework.entity.Image;
+
 
 import javax.validation.constraints.NotNull;
 
@@ -86,5 +88,11 @@ public class AdsController {
         ExtendedAdDto ad = adService.getAds(id);
         byte[] imageBytes = imageService.updateAdImage(id, image, authentication);
         return ResponseEntity.ok(imageBytes);
+    }
+
+    @GetMapping(value = "/image/{id}", produces = {MediaType.IMAGE_PNG_VALUE})
+    public ResponseEntity<byte[]> getImageAds(@PathVariable Integer id) {
+        Image imageAd = imageService.getImageByAds(id);
+        return ResponseEntity.ok(imageAd.getData());
     }
 }
