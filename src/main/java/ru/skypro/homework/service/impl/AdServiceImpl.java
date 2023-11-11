@@ -10,12 +10,15 @@ import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.entity.Ad;
+import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.CommentRepository;
+import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.api.AdService;
+import ru.skypro.homework.service.api.ImageService;
 import ru.skypro.homework.service.api.UserService;
 
 import javax.validation.constraints.NotNull;
@@ -32,7 +35,9 @@ public class AdServiceImpl implements AdService {
     private final AdRepository adRepository;
     private final UserRepository userRepository;
     private final AdMapper adMapper;
+    private final ImageRepository imageRepository;
     private final UserService userService;
+    private final ImageService imageService;
     private final CommentRepository commentRepository;
 
     @Override
@@ -80,12 +85,4 @@ public class AdServiceImpl implements AdService {
         myAdsDto.setCount(listAdsDto.size());
         return myAdsDto;
     }
-
-//    @Override
-//    public byte[] updateAdImage(Integer id, MultipartFile file) {
-//        Image oldImage = getImageFromDB(id);
-//        extractInfoFromFile(file, oldImage);
-//        Image savedImage = imageRepository.save(oldImage);
-//        return savedImage.getData();
-//    }
 }

@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,9 +14,9 @@ import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.exception.AdsNotFoundException;
 import ru.skypro.homework.service.api.AdService;
+import ru.skypro.homework.service.api.ImageService;
 
 import javax.validation.constraints.NotNull;
-import java.net.Authenticator;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -27,6 +26,7 @@ import java.net.Authenticator;
 public class AdsController {
 
     private final AdService adService;
+    private final ImageService imageService;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
@@ -79,11 +79,12 @@ public class AdsController {
         return ResponseEntity.ok(adService.getAdsMe(username, authentication)).getBody();
     }
 
-    @PatchMapping(path = "/{id}/image")
-    public ResponseEntity<byte[]> updateAdImage (@PathVariable("id") Integer pk,
+    @PatchMapping(path = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<byte[]> updateAdImage (@PathVariable("id") Integer id,
                                                  @RequestParam("image") MultipartFile image,
                                                  Authentication authentication){
-        byte[] updatedImageBytes = null;
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(updatedImageBytes);
+        ExtendedAdDto ad = adService.getAds(id);
+        byte[] imageBytes = imageService.updateAdImage(id, image, authentication);
+        return ResponseEntity.ok(imageBytes);
     }
 }
