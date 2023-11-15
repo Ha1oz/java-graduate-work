@@ -1,31 +1,20 @@
 package ru.skypro.homework.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.security.web.SecurityFilterChain;
-import ru.skypro.homework.dto.AdsDto;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-/**
- * @EnableGlobalMethodSecurity(prePostEnabled = true)
- * без нее аннотация @Preauthorize работать не будет.
- */
-
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
-
-
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger-resources/**",
@@ -45,7 +34,7 @@ public class WebSecurityConfig {
                                 authorization
                                         .mvcMatchers(AUTH_WHITELIST)
                                         .permitAll()
-                                        .mvcMatchers(HttpMethod.GET, "/ads"  )
+                                        .mvcMatchers(HttpMethod.GET, "/ads", "/ads/image/*", "/users/image/*")
                                         .permitAll()
                                         .mvcMatchers("/ads/**", "/users/**")
                                         .authenticated()

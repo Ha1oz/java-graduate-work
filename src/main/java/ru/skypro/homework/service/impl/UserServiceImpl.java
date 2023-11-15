@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPasswordDto;
+import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.exception.UserNotFoundException;
@@ -12,9 +14,10 @@ import ru.skypro.homework.exception.UserWithEmailNotFoundException;
 import ru.skypro.homework.exception.UserWithIdNotFoundException;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
-//import com.sky.AVITO.service.ImageService;
+import ru.skypro.homework.service.impl.ImageService;
 import ru.skypro.homework.service.inter.UserService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,10 +25,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
-    //    private final ImageService imageService;
+    private final ImageService imageService;
     private final UserMapper userMapper;
 
     /**
@@ -36,7 +39,7 @@ public class UserServiceImpl implements UserService{
      * {@link UserRepository#save(Object)}.
      *
      * @param newPasswordDto Объект NewPasswordDto с данными для установки нового пароля.
-     * @param email       Адрес электронной почты пользователя.
+     * @param email          Адрес электронной почты пользователя.
      * @return true, если пароль успешно обновлен, иначе false (если указан неверный текущий пароль).
      */
     @Override
@@ -64,7 +67,7 @@ public class UserServiceImpl implements UserService{
      *
      * @param email Адрес электронной почты пользователя.
      * @return Объект UserDto с данными пользователя.
-     * @throws UserWithEmailNotFoundException Если пользователь с указанным адресом электронной почты не найден.
+     * @throws UserWithEmailNotFoundException - ошибка, eсли пользователь с указанным адресом электронной почты не найден.
      */
     @Override
     public UserDto getUser(String email) {
@@ -73,108 +76,116 @@ public class UserServiceImpl implements UserService{
         return userMapper.toUserDto(user);
     }
 
-    /**
-<<<<<<< HEAD
-     * Найти и получить объект UserDto по id пользователя (Integer userId).
-     * Использует методы:
-     * {@link UserRepository#findById(Object)},
-     * {@link UserMapper#toUserDto(User)}.
-     *
-     * @param userId пользователя.
-     * @return oбъект UserDto с параметрами пользователя.
-     * @throws UserWithIdNotFoundException - исключение eсли пользователь с указанным id не найден.
-     */
-    @Override
-    public UserDto getUserById(Integer userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserWithIdNotFoundException("Нет пользователя с userId"));
-        //return UserMapper.mapToUserDto(user);
-        //return modelMapper.map(user, UserDto.class);
-        return userMapper.toUserDto(user);
-    }
+// *  Дополнительные (необязательные методы) /**
 
-    /**
-     * Получить  всех  пользователей.
-     * Использует методы:
-     * userRepository.findAll()
-     * проходит stream() по всему листу найденных пользователей users.stream().map((user) ->
-     * userMapper.toUserDto(user) - преобразует User  в UserDto
-     * .collect(Collectors.toList() собирает в лист
-     * return users.stream().map((user) -> userMapper.toUserDto(user))
-     * .collect(Collectors.toList());
-     */
+//     * Найти и получить объект UserDto по id пользователя (Integer userId).
+//     * Использует методы:
+//     * {@link UserRepository#findById(Object)},
+//     * {@link UserMapper#toUserDto(User)}.
+//     *
+//     * @param userId пользователя.
+//     * @return oбъект UserDto с параметрами пользователя.
+//     * @throws UserWithIdNotFoundException - исключение eсли пользователь с указанным id не найден.
+//     */
+//    @Override
+//    public UserDto getUserById(Integer userId) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new UserWithIdNotFoundException("Нет пользователя с userId", userId));
+//        //return UserMapper.mapToUserDto(user);
+//        //return modelMapper.map(user, UserDto.class);
+//        return userMapper.toUserDto(user);
+//    }
 
-    @Override
-    public List<UserDto> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream().map(userMapper::toUserDto)
-                .collect(Collectors.toList());
-    }
+//    /**
+//     * Получить  всех  пользователей.
+//     * Использует методы:
+//     * userRepository.findAll()
+//     * проходит stream() по всему листу найденных пользователей users.stream().map((user) ->
+//     * userMapper.toUserDto(user) - преобразует User  в UserDto
+//     * .collect(Collectors.toList() собирает в лист
+//     * return users.stream().map((user) -> userMapper.toUserDto(user))
+//     * .collect(Collectors.toList());
+//     */
+//
+//    @Override
+//    public List<UserDto> getAllUsers() {
+//        List<User> users = userRepository.findAll();
+//        return users.stream().map(userMapper::toUserDto)
+//                .collect(Collectors.toList());
+//    }
 
-    /**
-     * Создать пользователя.
-     * Использует методы:
-     * userMapper.usersFromDTO(userDto) Преобразовать UserDTO в пользовательскую сущность Users JPA
-     * userRepository.save(user) - схранить пользовательскую сущность в БД
-     * userMapper.toUserDto(user) - Преобразовать пользовательскую сущность Users JPA в UserDTO
-     *
-     * @return Объект UserDto - savedUserDto.
-     */
-    @Override
-    public UserDto createUser(UserDto userDto) {
-        /**
-         * Преобразовать UserDTO в пользовательскую сущность Users JPA
-         * Пользователь user = UserMapper.mapToUser(UserDTO);
-         * Пользователь user = ModelMapper.map(UserDTO, Users.class );
-         */
-        User user = userMapper.toUser(userDto);
-        User savedUser = userRepository.save(user);
+//    /**
+//     * Создать пользователя.
+//     * Использует методы:
+//     * userMapper.usersFromDTO(userDto) Преобразовать UserDTO в пользовательскую сущность Users JPA
+//     * userRepository.save(user) - схранить пользовательскую сущность в БД
+//     * userMapper.toUserDto(user) - Преобразовать пользовательскую сущность Users JPA в UserDTO
+//     *
+//     * @return Объект UserDto - savedUserDto.
+//     */
+//    @Override
+//    public UserDto createUser(UserDto userDto) {
+//        /**
+//         * Преобразовать UserDTO в пользовательскую сущность Users JPA
+//         * Пользователь user = UserMapper.mapToUser(UserDTO);
+//         * Пользователь user = ModelMapper.map(UserDTO, Users.class );
+//         */
+//        User user = userMapper.toUser(userDto);
+//        User savedUser = userRepository.save(user);
+//
+//        /**
+//         *  Преобразовать пользовательскую сущность Users JPA в UserDTO
+//         *  UserDTO savedUserDto = UserMapper.mapToUserDto(сохраненный пользователь);
+//         *  UserDTO savedUserDto = ModelMapper.map(сохраненный пользователь, UserDto.class );
+//         *
+//         */
+//
+//        UserDto savedUserDto = userMapper.toUserDto(user);
+//
+//        return savedUserDto;
+//    }
 
-        /**
-         *  Преобразовать пользовательскую сущность Users JPA в UserDTO
-         *  UserDTO savedUserDto = UserMapper.mapToUserDto(сохраненный пользователь);
-         *  UserDTO savedUserDto = ModelMapper.map(сохраненный пользователь, UserDto.class );
-         *
-         */
+//
+//    /**
+//     * Обновить данные пользователя.
+//     * Использует методы:
+//     * {@link UserRepository#findById(Object)},
+//     * {@link UserMapper#toUserDto(User)} - обновить существующего пользователя
+//     * {@link UserRepository#save(Object)} - сохранить обновленного пользователя.
+//     * Выбрасывает исключения:
+//     * {@link UserWithEmailNotFoundException (String)},
+//     *
+//     * @param userDto Объект UserDto с обновленными данными пользователя.
+//     * @param id Уникальный id пользователя
+//     * @return Объект UserDto с обновленными параметрами пользователя.
+//     * @throws UserWithEmailNotFoundException если пользователь с указанным адресом электронной почты не найден.
+//     */
 
+//    @Override
+//    public UserDto updateUser(UserDto userDto, Integer id) {
+//        User userWithId = userRepository.findById(id)
+//                .orElseThrow(() -> new UserWithIdNotFoundException("Нет пользователя с таким id",  id));
+//        userWithId.setFirstName(userWithId.getFirstName());
+//        userWithId.setLastName(userWithId.getLastName());
+//        userWithId.setEmail(userWithId.getEmail());
+//        User updatedUser = userRepository.save(userWithId);
+//        return userMapper.toUserDto(updatedUser);
 
-        UserDto savedUserDto = userMapper.toUserDto(user);
+//     * Удалить пользователя.
+//     * Использует методы:
+//     * {@link  UserRepository#deleteById(Object)}.
+//     *
+//     * @param userId пользователя.
+//     */
+//    @Override
+//    public void deleteUser(Integer userId) {
+//        userRepository.deleteById(userId);
+//    }
 
-        return savedUserDto;
-    }
-
+// *
 
     /**
      * Обновить данные пользователя.
-     * Использует методы:
-     * {@link UserRepository#findById(Object)},
-     * {@link UserMapper#toUserDto(User)} - обновить существующего пользователя
-     * {@link UserRepository#save(Object)} - сохранить обновленного пользователя.
-     * Выбрасывает исключения:
-     * {@link UserWithEmailNotFoundException (String)},
-     *
-     * @param userDto Объект UserDto с обновленными данными пользователя.
-     * @param id Уникальный id пользователя
-     * @return Объект UserDto с обновленными параметрами пользователя.
-     * @throws UserWithEmailNotFoundException если пользователь с указанным адресом электронной почты не найден.
-     */
-
-    @Override
-    public UserDto updateUser(UserDto userDto, Integer id) {
-        User userWithId = userRepository.findById(id)
-                .orElseThrow(() -> new UserWithIdNotFoundException("Нет пользователя с таким id"));
-        userWithId.setFirstName(userWithId.getFirstName());
-        userWithId.setLastName(userWithId.getLastName());
-        userWithId.setEmail(userWithId.getEmail());
-        User updatedUser = userRepository.save(userWithId);
-        return userMapper.toUserDto(updatedUser);
-    }
-
-    /**
-     * Обновить данные пользователя.
-=======
-     * Обновляет данные пользователя.
->>>>>>> elena_feature__3
      * Использует методы:
      * {@link UserRepository#findByEmail(String)},
      * {@link UserNotFoundException(String)},
@@ -184,7 +195,7 @@ public class UserServiceImpl implements UserService{
      * @param userDto Объект UserDto с обновленными данными пользователя.
      * @param email   Адрес электронной почты пользователя.
      * @return Объект UserDto с обновленными данными пользователя.
-     * @throws UserNotFoundException Если пользователь с указанным адресом электронной почты не найден.
+     * @throws UserNotFoundException ошибка, eсли пользователь с указанным адресом электронной почты не найден.
      */
     @Override
     public UserDto updateUser(UserDto userDto, String email) {
@@ -197,51 +208,52 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
-     * Удалить пользователя.
-     * Использует методы:
-     * {@link  UserRepository#deleteById(Object)}.
+     * Обновить аватар пользователя.
+     * Методы:
+     * {@link UserRepository#findByEmail(String)},
+     * {@link UserWithEmailNotFoundException(String)},
+     * {@link ImageService#deleteFile(String)},
+     * {@link ImageService#uploadImage(MultipartFile, String)},
+     * {@link UserRepository#save(Object)}.
      *
-     * @param userId пользователя.
+     * @param image Объект MultipartFile с новым аватаром пользователя.
+     * @param email Адрес электронной почты пользователя.
+     * @throws UserWithEmailNotFoundException - ошибка,  если пользователь с указанным адресом электронной почты не найден.
      */
     @Override
-    public void deleteUser(Integer userId) {
-        userRepository.deleteById(userId);
+    public void updateAvatar(MultipartFile image, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserWithEmailNotFoundException(email));
+        imageService.deleteFile(user.getImage());
+        user.setImage(imageService.uploadImage(image, "/users"));
+        userRepository.save(user);
+        log.trace("Avatar updated");
     }
 
-//    /**
-//     * Обновляет аватар пользователя.
-//     * Использует методы:
-//     * {@link UserRepository#findByEmail(String)},
-//     * {@link UserWithEmailNotFoundException(String)},
-//     * {@link ImageService#deleteFileIfNotNull(String)},
-//     * {@link ImageService#saveImage(MultipartFile, String)},
-//     * {@link UserRepository#save(Object)}.
-//     *
-//     * @param image Объект MultipartFile с новым аватаром пользователя.
-//     * @param email Адрес электронной почты пользователя.
-//     * @throws UserWithEmailNotFoundException Если пользователь с указанным адресом электронной почты не найден.
-//     */
-//    @Override
-//    public void updateAvatar(MultipartFile image, String email) {
-//        User user = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new UserWithEmailNotFoundException(email));
-//        imageService.deleteFileIfNotNull(user.getImage());
-//        user.setImage(imageService.saveImage(image, "/users"));
-//        userRepository.save(user);
-//        log.trace("Avatar updated");
-//    }
+    /**
+     * Получить изображение по его имени.
+     * метод {@link ImageService#downloadImage (String)} для получения изображения по имени.
+     *
+     * @param name Имя изображения, которое нужно получить.
+     * @return Массив байтов, представляющий изображение.
+     * @throws IOException - ошибка при получении изображения.
+     */
+    @Override
+    public byte[] getImage(String name) throws IOException {
+        return imageService.downloadImage (name);
+    }
 
-//    /**
-//     * Получает изображение по его имени.
-//     * Использует метод {@link ImageService#getImage(String)} для получения изображения по имени.
-//     *
-//     * @param name Имя изображения, которое нужно получить.
-//     * @return Массив байтов, представляющий изображение.
-//     * @throws IOException Если произошла ошибка при получении изображения.
-//     */
-//    @Override
-//    public byte[] getImage(String name) throws IOException {
-//        return imageService.getImage(name);
-//    }
+    //
+    @Override
+    public UserDto updateUserDto(UpdateUserDto updateUserDto, Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserWithIdNotFoundException("Update user with id:", id));
+
+        userMapper.updateUser(updateUserDto, user);
+        userRepository.save(user);
+        log.trace("Update user with id:  ", id);
+        return userMapper.toUserDto(user);
+    }
 }
+
 

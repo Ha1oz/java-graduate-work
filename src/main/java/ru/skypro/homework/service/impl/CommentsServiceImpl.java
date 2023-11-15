@@ -130,40 +130,7 @@ public class CommentsServiceImpl implements CommentsService {
         return commentMapper.toCommentDtoFromComment(comment);
     }
 
-//    /**
-//     * Обновляет изображение объявления по его идентификатору.
-//     * <p>
-//     * Использует методы:
-//     * {@link AdsRepository#findById(Object)},
-//     * {@link ImageService#deleteFileIfNotNull(String)},
-//     * {@link ImageService#saveImage(MultipartFile, String)} и
-//     * {@link AdsRepository#save(Object)}.
-//     * @param id    Идентификатор объявления, для которого нужно обновить изображение.
-//     * @param image Объект MultipartFile с новым изображением объявления.
-//     * @throws AdsNotFoundException Если объявление с указанным идентификатором не найдено.
-//     */
-//    @Override
-//    public void updateAdsImage(Integer id, MultipartFile image) {
-//        Ads ads = adsRepository.findById(id)
-//                .orElseThrow(() -> new AdsNotFoundException("Ads not found"));
-//        imageService.deleteFileIfNotNull(ads.getImage());
-//        ads.setImage(imageService.saveImage(image, "/ads"));
-//        adsRepository.save(ads);
-//    }
-//
-//    /**
-//     * Получает изображение по его имени.
-//     * <p>
-//     * Использует метод {@link ImageService#getImage(String)} для получения изображения по имени.
-//     *
-//     * @param name Имя изображения, которое нужно получить.
-//     * @return Массив байтов, представляющий изображение.
-//     * @throws IOException Если произошла ошибка при получении изображения.
-//     */
-//    @Override
-//    public byte[] getImage(String name) throws IOException {
-//        return imageService.getImage(name);
-//    }
+
 
     /**
      * Получает объект CommentDto по идентификаторам объявления и комментария.
