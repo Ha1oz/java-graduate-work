@@ -29,5 +29,4 @@ public interface AdsMapper {
     @Mapping(target = "email",source = "user.email")
     @Mapping(target = "phone",source = "user.phone")
     ExtendedAdDto toExtendedAds(Ads ads);
-
     void updateAds(CreateOrUpdateAdDto createOrUpdateAdDto, @MappingTarget Ads ads);}

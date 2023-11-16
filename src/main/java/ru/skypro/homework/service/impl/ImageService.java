@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import java.io.File;
 import java.io.IOException;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
@@ -20,21 +18,19 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ImageService {
-
     @Value("${image.dir.path}")
     private String imageDir;
     /**
      * Сгенерируем случайное имя для вашего вновь загруженного файла:
      * String fileName = UUID.randomUUID().toString()+ EXTENSION;
      * Проверьте, существует ли файл в каталоге, который вы загружаете
-     * if(serverFile.exists())
+     * if (serverFile.exists())
      * Если файл существует, начните снова с шага 1, пока не получите имя файла, которого нет на сервере.
      * Класс Files - это еще один метод write() начиная с Java 7, и он работает аналогично WriteString().
      * В качестве параметров он принимает Path и массив байтов.
      * Метод write() подходит для записи двоичных данных, а также его также можно использовать для записи
      * текстовых данных.
      * Path filePath = Path.of(imageDir, filename);
-     *
      * Write bytes
      * Files.write(filePath, image.getBytes());
      *
@@ -58,9 +54,11 @@ public class ImageService {
     public byte[] downloadImage(String name) throws IOException {
         String fullPath = imageDir + "/" + name;
         File file = new File(fullPath);
+        log.info("Downloading image " + fullPath);
         if (file.exists()) {
             return Files.readAllBytes(Path.of(fullPath));
         }
+        log.info("File is not found " + fullPath);
         return null;
     }
 
