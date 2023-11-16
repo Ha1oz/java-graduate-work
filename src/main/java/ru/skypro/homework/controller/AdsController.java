@@ -37,7 +37,7 @@ public class AdsController {
 
     /**
      * Получить список объявлений пользователя, выполнившего аутентификацию.
-     * @param authentication Объект {@link Authentication} с информацией об аутентифицированном пользователе.
+     * @param userDetails Объект {@link Authentication} с информацией об аутентифицированном пользователе.
      * @return Объект {@link ResponseEntity} с оберткой {@link AdsDto}, содержащей список объявлений пользователя и статус ответа.
      */
      @GetMapping("/me")
@@ -48,7 +48,7 @@ public class AdsController {
     /**
      * Добавить новое объявление.
      *
-     * @param authentication Объект {@link Authentication} с информацией об аутентифицированном пользователе.
+     * @param userDetails Объект {@link Authentication} с информацией об аутентифицированном пользователе.
      * @param createAds      Объект {@link CreateOrUpdateAdDto} с данными нового объявления.
      * @param image          Объект {@link MultipartFile} с изображением объявления.
      * @return Объект {@link ResponseEntity} с созданным объявлением и статусом ответа.
@@ -79,7 +79,6 @@ public class AdsController {
      * @return Объект {@link ResponseEntity} с пустым телом ответа и статусом NO_CONTENT в случае успешного удаления.
      */
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-//    @PreAuthorize("hasRole('ADMIN') or @adsServiceImpl.getAds(#id).getEmail() == authentication.principal.username")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeAd(@PathVariable Integer id) {
         adsService.removeAd(id);
@@ -93,7 +92,6 @@ public class AdsController {
      * @return Объект {@link ResponseEntity} с обновленным объявлением и статусом ответа.
      */
 
-    /*@PreAuthorize("hasRole('ADMIN') or @adsServiceImpl.getAds(#id).getEmail()==authentication.principal.username")*/
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<AdDto> updateAds(@RequestBody CreateOrUpdateAdDto createOrUpdateAdDto,
