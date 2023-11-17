@@ -15,6 +15,8 @@ import ru.skypro.homework.service.inter.AuthService;
 
 import java.util.Optional;
 
+import static ru.skypro.homework.dto.Role.USER;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -52,18 +54,17 @@ public class AuthServiceImpl  implements AuthService {
      * {@link UserRepository#save(Object)}.
      *
      * @param register Объект Register с данными для регистрации нового пользователя.
-     * @param role     Роль нового пользователя.
      * @return true, если регистрация прошла успешно, иначе false (если пользователь с таким адресом электронной почты уже существует).
      */
     @Override
-    public boolean register(Register register, Role role) {
-        if (userRepository.findByEmail(register.getUsername()).isPresent()) {
+    public boolean register(Register register) {
+        if (userRepository.findByEmail(register.getUsername().toLowerCase()).isPresent()) {
             return false;
         }
         User user = userMapper.toUser(register);
         user.setEmail(user.getEmail().toLowerCase());
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setRole(role);
+        user.setRole(register.getRole() == null ? USER : register.getRole());
         userRepository.save(user);
         log.debug("Registered a new user");
         return true;

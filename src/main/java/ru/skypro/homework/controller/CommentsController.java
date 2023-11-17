@@ -52,15 +52,13 @@ public class CommentsController {
     }
 
     /**
-     * Удалить комментарий объявления по его идентификатору.     *
+     * Удалить комментарий объявления по его идентификатору.
      * @param adId      Идентификатор объявления, для которого нужно удалить комментарий.
      * @param commentId Идентификатор комментария, который нужно удалить.
      * @return Объект {@link ResponseEntity} с пустым телом ответа и статусом NO_CONTENT в случае успешного удаления.
 
      */
 
-
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Integer adId, @PathVariable Integer commentId) {
         commentsService.deleteComment(adId, commentId);
