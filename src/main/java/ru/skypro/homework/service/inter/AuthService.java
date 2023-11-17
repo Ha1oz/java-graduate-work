@@ -5,5 +5,5 @@ import ru.skypro.homework.dto.Role;
 public interface AuthService {
     boolean login(String userName, String password);
 
-    boolean register(Register register, Role role);
+    boolean register(Register register);
 }
