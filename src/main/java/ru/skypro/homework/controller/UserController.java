@@ -1,20 +1,18 @@
 package ru.skypro.homework.controller;
 
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.*;
+import ru.skypro.homework.dto.NewPasswordDto;
+import ru.skypro.homework.dto.UpdateUserDto;
+import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.service.inter.UserService;
 
 import java.io.IOException;
@@ -27,10 +25,10 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * Установить новый пароль для пользователя.     *
+     * Установить новый пароль для пользователя.  *
      *
      * @param newPasswordDto           Объект {@link NewPasswordDto} с новым паролем.
-     * @param @AuthenticationPrincipal UserDetails userDetails Объект {@link    UserDetails userDetails } с информацией об аутентифицированном пользователе.
+     * @param userDetails @AuthenticationPrincipal UserDetails userDetails Объект {@link    UserDetails userDetails } с информацией об аутентифицированном пользователе.
      * @return Объект {@link ResponseEntity} с объектом {@link NewPasswordDto} и статусом ответа.
      */
 
@@ -44,7 +42,7 @@ public class UserController {
     /**
      * Получить информацию о текущем пользователе.
      *
-     * @param @AuthenticationPrincipal UserDetails userDetails Объект {@link    UserDetails userDetails } с информацией об аутентифицированном пользователе.
+     * @param userDetails @AuthenticationPrincipal UserDetails userDetails Объект {@link    UserDetails userDetails } с информацией об аутентифицированном пользователе.
      * @return Объект {@link ResponseEntity} с объектом {@link UserDto} и статусом ответа.
      */
 
@@ -59,7 +57,7 @@ public class UserController {
      * Обновить информацию о текущем пользователе.
      *
      * @param userDto                  Объект {@link UserDto} с обновленными данными пользователя.
-     * @param @AuthenticationPrincipal UserDetails userDetails Объект {@link    UserDetails userDetails } с информацией об аутентифицированном пользователе.
+     * @param userDetails @AuthenticationPrincipal UserDetails userDetails Объект {@link    UserDetails userDetails } с информацией об аутентифицированном пользователе.
      * @return Объект {@link ResponseEntity} с обновленным объектом {@link UserDto} и статусом ответа.
      */
 
@@ -73,7 +71,7 @@ public class UserController {
      * Обновить аватар пользователя.
      *
      * @param image          Объект {@link MultipartFile} с новым изображением для аватара.
-     * @param  @AuthenticationPrincipal UserDetails userDetails Объект {@link @AuthenticationPrincipal UserDetails userDetails} с информацией об аутентифицированном пользователе.
+     * @param userDetails @AuthenticationPrincipal UserDetails userDetails Объект {@link @AuthenticationPrincipal UserDetails userDetails} с информацией об аутентифицированном пользователе.
      * @return Объект {@link ResponseEntity} с пустым телом ответа и статусом NO_CONTENT в случае успешного обновления.
      */
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

@@ -30,30 +30,7 @@ public class WebSecurityConfig {
             "/login",
             "/register"
     };
-
-    /**
-     *   Доступ только для не зарегистрированных пользователей
-     *                     .antMatchers("/registration").not().fullyAuthenticated()
-     *  Доступ только для пользователей с ролью Администратор
-     *                     .antMatchers("/admin/**").hasRole("ADMIN")
-     *                     .antMatchers("/news").hasRole("USER")
-     *   Доступ разрешен всем пользователей
-     *                      .antMatchers("/", "/resources/**").permitAll()
-     *  Все остальные страницы требуют аутентификации
-     *                 .anyRequest().authenticated()
-     *                 .and()
-     *  Настройка для входа в систему
-     *                      .formLogin()
-     *                     .loginPage("/login")
-     *      Перенарпавление на главную страницу после успешного входа
-     *                      .defaultSuccessUrl("/")
-     *                      .permitAll()
-     *                 .and()
-     *                      .logout()
-     *                     .permitAll()
-     *                      .logoutSuccessUrl("/");
-     */
-
+  
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf()

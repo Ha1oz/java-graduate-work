@@ -93,7 +93,6 @@ public class AdsController {
      * @return Объект {@link ResponseEntity} с обновленным объявлением и статусом ответа.
      */
 
-
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<AdDto> updateAds(@RequestBody CreateOrUpdateAdDto createOrUpdateAdDto,
