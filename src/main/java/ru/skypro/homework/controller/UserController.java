@@ -48,7 +48,6 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserDto> getUser(@AuthenticationPrincipal UserDetails userDetails) {
-        System.out.println("Пользователь получен");
         return ResponseEntity.ok(userService.getUser(userDetails.getUsername()));
     }
 
@@ -94,7 +93,6 @@ public class UserController {
         return userService.getImage(name);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(@RequestBody UpdateUserDto updateUserDto,
                                           @PathVariable Integer id) {

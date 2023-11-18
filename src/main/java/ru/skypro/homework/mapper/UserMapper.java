@@ -20,6 +20,7 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "image", ignore = true)
     @Mapping(target = "email", ignore = true)
+    @Mapping(source = "role", target = "role")
     void updateUserFromUserDto(UserDto userDto, @MappingTarget User user);
     void updateUser(UpdateUserDto updateAdDto, @MappingTarget User user);}
 
