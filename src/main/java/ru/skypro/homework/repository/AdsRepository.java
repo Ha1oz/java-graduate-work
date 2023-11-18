@@ -7,7 +7,6 @@ import ru.skypro.homework.entity.User;
 
 import java.util.List;
 
-
 @Repository
 public interface AdsRepository extends JpaRepository<Ads, Integer> {
     List<Ads> findByUser(User user);

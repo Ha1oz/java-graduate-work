@@ -100,9 +100,6 @@ public class AdsController {
         return ResponseEntity.ok(adsService.updateAds(createOrUpdateAdDto, id));
     }
 
-
-
-
     /**
      * Обновить изображение объявления по его идентификатору.
      * @param id    Идентификатор объявления, для которого нужно обновить изображение.

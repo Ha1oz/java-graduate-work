@@ -17,13 +17,10 @@ import  ru.skypro.homework.repository.CommentRepository;
 import  ru.skypro.homework.repository.UserRepository;
 import  ru.skypro.homework.service.inter.AdsService;
 
-import ru.skypro.homework.service.impl.ImageService ;
-
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
-@Slf4j
 /**
  *  Aннотация @Slf4j Заставляет lombok генерировать поле регистратора.
  *  public class LogExample {
@@ -31,6 +28,7 @@ import java.util.List;
  *  }
  */
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 
@@ -40,6 +38,7 @@ public class AdsServiceImpl  implements AdsService{
     private final CommentRepository commentRepository;
 
     private final ImageService imageService;
+
     @Autowired
     private   AdsMapper adsMapper;
 
@@ -141,7 +140,6 @@ public class AdsServiceImpl  implements AdsService{
         adsRepository.delete(ads);
     }
 
-
     /**
      * Обновляет информацию об объявлении по его идентификатору.
      * Использует методы:
@@ -194,6 +192,4 @@ public class AdsServiceImpl  implements AdsService{
     public byte[] getImage(String name) throws IOException {
         return imageService.downloadImage(name);
     }
-
-
 }

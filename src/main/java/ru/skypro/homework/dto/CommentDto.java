@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 @Data
 public class CommentDto {
     private Integer author;
-    //ссылка на аватар автора комментария
     private String authorImage;
     private String authorFirstName;
     private LocalDateTime createdAt;

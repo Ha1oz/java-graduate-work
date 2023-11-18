@@ -8,13 +8,13 @@ import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entity.User;
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     @Mapping(source = "username", target = "email")
     User toUser(Register register);
     User toUser(UserDto userDto);
     MyUserDetailsDto toMyUserDetailsDto(User user);
-
     UserDto toUserDto(User user);
 
     @Mapping(target = "id", ignore = true)

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,8 +17,10 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ImageService {
+
     @Value("${image.dir.path}")
     private String imageDir;
+
     /**
      * Сгенерируем случайное имя для вашего вновь загруженного файла:
      * String fileName = UUID.randomUUID().toString()+ EXTENSION;
@@ -35,9 +36,7 @@ public class ImageService {
      * Files.write(filePath, image.getBytes());
      *
      */
-
     public String uploadImage(MultipartFile image, String name) {
-
         String extension = StringUtils.getFilenameExtension(image.getOriginalFilename());
         String filename = UUID.randomUUID() + "." + extension;
         Path filePath = Path.of(imageDir, filename);
@@ -63,9 +62,11 @@ public class ImageService {
     }
 
     public void deleteFile(String path) {
+
         if (path == null) {
             return;
         }
+
         String fileName = path.substring(path.lastIndexOf('/'));
         File fileToDelete = new File(imageDir + fileName);
         if (fileToDelete.exists()) {

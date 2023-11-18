@@ -9,11 +9,9 @@ import ru.skypro.homework.entity.Comment;
 
 import java.util.List;
 
-
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
     List<CommentDto> toListDto(List<Comment> commentList);
-
     Comment toCommentFromCreateComment(CreateOrUpdateCommentDto createComment);
 
     @Mapping(target = "author", source = "user.id")

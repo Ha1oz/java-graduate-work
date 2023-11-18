@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.CommentsDto;
-
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
 import ru.skypro.homework.entity.Ads;
 import ru.skypro.homework.entity.Comment;
@@ -23,25 +22,22 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-@Slf4j
-
 /**
  * Aннотация @Slf4j заставляет lombok генерировать поле регистратора.
  * public class LogExample {
  * private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LogExample.class);}
  */
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommentsServiceImpl implements CommentsService {
+
     private final CommentRepository  commentRepository;
     private final UserRepository userRepository;
     private final AdsRepository   adsRepository;
+
     @Autowired
     private CommentMapper commentMapper;
-
-
 
     /**
      * Получить список комментариев к объявлению по его идентификатору.
@@ -90,7 +86,6 @@ public class CommentsServiceImpl implements CommentsService {
         return commentMapper.toCommentDtoFromComment(comment);
     }
 
-
     /**
      * Удаляет комментарий по идентификаторам объявления и комментария.
      * Использует методы:
@@ -130,8 +125,6 @@ public class CommentsServiceImpl implements CommentsService {
         return commentMapper.toCommentDtoFromComment(comment);
     }
 
-
-
     /**
      * Получает объект CommentDto по идентификаторам объявления и комментария.
      * <p>
@@ -149,6 +142,7 @@ public class CommentsServiceImpl implements CommentsService {
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found"));
         return commentMapper.toCommentDtoFromComment(comment);
     }
+
     /**
      * Получить объект String .getUser().getEmail()  по идентификатору комментария.
 

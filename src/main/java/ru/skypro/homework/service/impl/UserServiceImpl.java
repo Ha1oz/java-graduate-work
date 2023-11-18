@@ -14,13 +14,9 @@ import ru.skypro.homework.exception.UserWithEmailNotFoundException;
 import ru.skypro.homework.exception.UserWithIdNotFoundException;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.impl.ImageService;
 import ru.skypro.homework.service.inter.UserService;
-
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -37,7 +33,6 @@ public class UserServiceImpl implements UserService {
      * {@link UserRepository#findByEmail(String)},
      * {@link PasswordEncoder#matches(CharSequence, String)},
      * {@link UserRepository#save(Object)}.
-     *
      * @param newPasswordDto Объект NewPasswordDto с данными для установки нового пароля.
      * @param email          Адрес электронной почты пользователя.
      * @return true, если пароль успешно обновлен, иначе false (если указан неверный текущий пароль).
@@ -64,7 +59,6 @@ public class UserServiceImpl implements UserService {
      * {@link UserRepository#findByEmail(String)},
      * {@link UserWithEmailNotFoundException(String)},
      * {@link UserMapper#toUserDto(User)}.
-     *
      * @param email Адрес электронной почты пользователя.
      * @return Объект UserDto с данными пользователя.
      * @throws UserWithEmailNotFoundException - ошибка, eсли пользователь с указанным адресом электронной почты не найден.
@@ -75,6 +69,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserWithEmailNotFoundException(email));
         return userMapper.toUserDto(user);
     }
+
     /**
      * Обновить данные пользователя.
      * Использует методы:
@@ -106,7 +101,6 @@ public class UserServiceImpl implements UserService {
      * {@link ImageService#deleteFile(String)},
      * {@link ImageService#uploadImage(MultipartFile, String)},
      * {@link UserRepository#save(Object)}.
-     *
      * @param image Объект MultipartFile с новым аватаром пользователя.
      * @param email Адрес электронной почты пользователя.
      * @throws UserWithEmailNotFoundException - ошибка, если пользователь с указанным адресом электронной почты не найден.
@@ -134,12 +128,10 @@ public class UserServiceImpl implements UserService {
         return imageService.downloadImage (name);
     }
 
-    //
     @Override
     public UserDto updateUserDto(UpdateUserDto updateUserDto, Integer id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserWithIdNotFoundException("Update user with id:", id));
-
         userMapper.updateUser(updateUserDto, user);
         userRepository.save(user);
         log.trace("Update user with id:  ", id);

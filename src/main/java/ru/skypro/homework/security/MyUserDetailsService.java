@@ -6,12 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import  ru.skypro.homework.dto.MyUserDetailsDto;
-import ru.skypro.homework.exception.CommentNotFoundException;
 import  ru.skypro.homework.exception.UserWithEmailNotFoundException;
 import  ru.skypro.homework.mapper.UserMapper;
-import ru.skypro.homework.repository.CommentRepository;
 import  ru.skypro.homework.repository.UserRepository;
-
 
 /**
  *«Пользователь» – это просто Object. В большинстве случаев он может быть
@@ -20,8 +17,6 @@ import  ru.skypro.homework.repository.UserRepository;
  * Для создания UserDetails используется интерфейс UserDetailsService, с единственным методом:
  * UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
  */
-
-
 
 @Service
 @RequiredArgsConstructor

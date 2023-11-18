@@ -50,23 +50,14 @@ public class MyUserDetails implements UserDetails{
      *   Optional.of  бросит исключение NullPointerException, если ему передать значение null в качестве параметра.
      */
 
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Optional.ofNullable(myUserDetailsDto)
-
                 .map(MyUserDetailsDto::getRole)
-
                 .map(role -> "ROLE_" + role)
-
                 .map(SimpleGrantedAuthority::new)
-
                 .map(Collections::singleton)
-
                 .orElse(Collections.emptySet());
-
     }
 
     @Override

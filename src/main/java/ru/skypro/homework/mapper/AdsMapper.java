@@ -1,10 +1,8 @@
 package ru.skypro.homework.mapper;
 
-
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.entity.Ads;
 import org.mapstruct.Mapper;
-
 
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
