@@ -78,10 +78,10 @@ public class AdsController {
      * @param id Идентификатор объявления, которое нужно удалить.
      * @return Объект {@link ResponseEntity} с пустым телом ответа и статусом NO_CONTENT в случае успешного удаления.
      */
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeAd(@PathVariable Integer id) {
+    public ResponseEntity<?> removeAd(@AuthenticationPrincipal UserDetails userDetails,
+                                      @PathVariable Integer id) {
+
         adsService.removeAd(id);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
@@ -93,9 +93,9 @@ public class AdsController {
      * @return Объект {@link ResponseEntity} с обновленным объявлением и статусом ответа.
      */
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping("/{id}")
-    public ResponseEntity<AdDto> updateAds(@RequestBody CreateOrUpdateAdDto createOrUpdateAdDto,
+    public ResponseEntity<AdDto> updateAds(@AuthenticationPrincipal UserDetails userDetails,
+                                           @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto,
                                            @PathVariable Integer id) {
         return ResponseEntity.ok(adsService.updateAds(createOrUpdateAdDto, id));
     }
@@ -111,7 +111,9 @@ public class AdsController {
      */
 
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateAdsImage(@PathVariable Integer id, @RequestParam MultipartFile image) {
+    public ResponseEntity<?> updateAdsImage(@AuthenticationPrincipal UserDetails userDetails,
+                                            @PathVariable Integer id,
+                                            @RequestParam MultipartFile image) {
         adsService.updateAdsImage(id, image);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }

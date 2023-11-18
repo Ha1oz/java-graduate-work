@@ -7,12 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.CommentsDto;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
+import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.service.inter.CommentsService;
+
+import java.util.Objects;
 
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
@@ -48,6 +52,7 @@ public class CommentsController {
     public ResponseEntity<CommentDto> addComment(@PathVariable Integer id,
                                                  @RequestBody CreateOrUpdateCommentDto createOrUpdateCommentDto,
                                                  @AuthenticationPrincipal UserDetails userDetails) {
+
         return ResponseEntity.ok(commentsService.addComment(id, createOrUpdateCommentDto, userDetails.getUsername()));
     }
 
@@ -60,7 +65,7 @@ public class CommentsController {
      */
 
     @DeleteMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable Integer adId, @PathVariable Integer commentId) {
+    public ResponseEntity<?> deleteComment(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer adId, @PathVariable Integer commentId) {
         commentsService.deleteComment(adId, commentId);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
@@ -75,9 +80,9 @@ public class CommentsController {
      */
 
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<CommentDto> updateComment(@PathVariable Integer adId,
+    public ResponseEntity<CommentDto> updateComment(@AuthenticationPrincipal UserDetails userDetails,
+                                                    @PathVariable Integer adId,
                                                     @PathVariable Integer commentId,
                                                     @RequestBody CreateOrUpdateCommentDto createOrUpdateCommentDto) {
         return ResponseEntity.ok(commentsService.updateComment(adId, commentId, createOrUpdateCommentDto));
