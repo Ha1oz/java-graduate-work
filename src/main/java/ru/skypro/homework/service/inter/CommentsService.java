@@ -4,6 +4,7 @@ import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.CommentsDto;
 
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
+import ru.skypro.homework.entity.User;
 
 public interface CommentsService {
     CommentsDto getComments(Integer id);
@@ -14,6 +15,6 @@ public interface CommentsService {
 
     CommentDto updateComment(Integer adId, Integer id, CreateOrUpdateCommentDto createComment);
     CommentDto getCommentDto(Integer adId,Integer id);
-
+    CommentsDto getCommentsFromUserName(String userName);
     String getUserNameOfComment(Integer id);
 }

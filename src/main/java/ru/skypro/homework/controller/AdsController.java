@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.service.inter.AdsService;
+import ru.skypro.homework.service.inter.UserService;
 
 import java.io.IOException;
+import java.util.Objects;
 
 
 @Slf4j
@@ -25,6 +27,7 @@ import java.io.IOException;
 
 public class AdsController {
     private final AdsService adsService;
+    private final UserService userService;
 
     /**
      * Получить список всех объявлений.
@@ -81,9 +84,12 @@ public class AdsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeAd(@AuthenticationPrincipal UserDetails userDetails,
                                       @PathVariable Integer id) {
-
-        adsService.removeAd(id);
-        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))
+                || adsService.getAdsMe(userDetails.getUsername()).getResults().stream().anyMatch(a -> Objects.equals(a.getPk(), id))) {
+            adsService.removeAd(id);
+            return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     /**
@@ -97,7 +103,11 @@ public class AdsController {
     public ResponseEntity<AdDto> updateAds(@AuthenticationPrincipal UserDetails userDetails,
                                            @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto,
                                            @PathVariable Integer id) {
-        return ResponseEntity.ok(adsService.updateAds(createOrUpdateAdDto, id));
+        if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))
+                || adsService.getAdsMe(userDetails.getUsername()).getResults().stream().anyMatch(a -> Objects.equals(a.getPk(), id))) {
+            return ResponseEntity.ok(adsService.updateAds(createOrUpdateAdDto, id));
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
 
@@ -114,8 +124,12 @@ public class AdsController {
     public ResponseEntity<?> updateAdsImage(@AuthenticationPrincipal UserDetails userDetails,
                                             @PathVariable Integer id,
                                             @RequestParam MultipartFile image) {
-        adsService.updateAdsImage(id, image);
-        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))
+                || adsService.getAdsMe(userDetails.getUsername()).getResults().stream().anyMatch(a -> Objects.equals(a.getPk(), id))) {
+            adsService.updateAdsImage(id, image);
+            return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     /**
