@@ -10,6 +10,7 @@ import ru.skypro.homework.dto.CommentsDto;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
 import ru.skypro.homework.entity.Ads;
 import ru.skypro.homework.entity.Comment;
+import ru.skypro.homework.entity.User;
 import ru.skypro.homework.exception.AdsNotFoundException;
 import ru.skypro.homework.exception.CommentNotFoundException;
 import ru.skypro.homework.exception.UserWithEmailNotFoundException;
@@ -149,6 +150,19 @@ public class CommentsServiceImpl implements CommentsService {
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found"));
         return commentMapper.toCommentDtoFromComment(comment);
     }
+
+    @Override
+    public CommentsDto getCommentsFromUserName(String userName) {
+        List<Comment> commentList = commentRepository.findAllByUser(userRepository.findByEmail(userName)
+                .orElseThrow(() -> new UserWithEmailNotFoundException("User not found")));
+        List<CommentDto> commentDtoList= commentMapper.toListDto(commentList);
+
+        CommentsDto commentsDto = new CommentsDto();
+        commentsDto.setResults(commentDtoList);
+        commentsDto.setCount(commentDtoList.size());
+        return commentsDto;
+    }
+
     /**
      * Получить объект String .getUser().getEmail()  по идентификатору комментария.
 
@@ -166,4 +180,5 @@ public class CommentsServiceImpl implements CommentsService {
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found"))
                 .getUser().getEmail();
     }
+
 }

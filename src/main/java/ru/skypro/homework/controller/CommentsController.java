@@ -52,7 +52,6 @@ public class CommentsController {
     public ResponseEntity<CommentDto> addComment(@PathVariable Integer id,
                                                  @RequestBody CreateOrUpdateCommentDto createOrUpdateCommentDto,
                                                  @AuthenticationPrincipal UserDetails userDetails) {
-
         return ResponseEntity.ok(commentsService.addComment(id, createOrUpdateCommentDto, userDetails.getUsername()));
     }
 
@@ -66,8 +65,13 @@ public class CommentsController {
 
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer adId, @PathVariable Integer commentId) {
-        commentsService.deleteComment(adId, commentId);
-        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+
+        if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))
+                || commentsService.getCommentsFromUserName(userDetails.getUsername()).getResults().stream().anyMatch(a -> Objects.equals(a.getPk(), commentId))) {
+            commentsService.deleteComment(adId, commentId);
+            return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     /**
@@ -85,6 +89,10 @@ public class CommentsController {
                                                     @PathVariable Integer adId,
                                                     @PathVariable Integer commentId,
                                                     @RequestBody CreateOrUpdateCommentDto createOrUpdateCommentDto) {
-        return ResponseEntity.ok(commentsService.updateComment(adId, commentId, createOrUpdateCommentDto));
+        if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))
+                || commentsService.getCommentsFromUserName(userDetails.getUsername()).getResults().stream().anyMatch(a -> Objects.equals(a.getPk(), commentId))) {
+            return ResponseEntity.ok(commentsService.updateComment(adId, commentId, createOrUpdateCommentDto));
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 }
